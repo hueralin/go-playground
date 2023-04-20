@@ -1,3 +1,3 @@
-module go-demo
+module go-playground
 
 go 1.18
