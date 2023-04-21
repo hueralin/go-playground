@@ -55,9 +55,9 @@ func main() {
 	f1 := 1.2
 	b1 := true
 	fmt.Printf("string ptr is %T\n", &str) // *string
-	fmt.Printf("int ptr is %T\n", &num2) // *int
-	fmt.Printf("float ptr is %T\n", &f1) // *float64
-	fmt.Printf("bool ptr is %T\n", &b1) // *bool
+	fmt.Printf("int ptr is %T\n", &num2)   // *int
+	fmt.Printf("float ptr is %T\n", &f1)   // *float64
+	fmt.Printf("bool ptr is %T\n", &b1)    // *bool
 
 	var nilPtr *int
 	fmt.Println("nilPtr is ", nilPtr) // nil

@@ -6,11 +6,11 @@ import (
 )
 
 /**
-	函数语法：
-	func funcName(parameter_list) result_list {
-		// logic
-	}
- */
+函数语法：
+func funcName(parameter_list) result_list {
+	// logic
+}
+*/
 
 func hello() {
 	fmt.Println("hello")
@@ -88,7 +88,7 @@ func main() {
 	}
 
 	// 匿名函数, 只拥有短暂的生命，一般都是定义后立即使用（好像不能定义在外部，类似于 JS 的立即执行函数）
-	func (a, b int) {
+	func(a, b int) {
 		fmt.Println(a + b)
 	}(1, 2)
 

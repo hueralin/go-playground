@@ -19,51 +19,51 @@ func arrayTest01() {
 
 func arrayTest02() {
 	// 声明并初始化
-	var arr = [5]int{ 10, 15, 20, 25, 30 }
+	var arr = [5]int{10, 15, 20, 25, 30}
 	fmt.Println(arr)
 
 	// 短声明
-	arr2 := [5]int{ 10, 15, 20, 25, 30 }
+	arr2 := [5]int{10, 15, 20, 25, 30}
 	fmt.Println(arr2)
 
 	// 部分初始化, 未初始化的为 0 值
-	arr3 := [5]int{ 10, 15 }
+	arr3 := [5]int{10, 15}
 	fmt.Println(arr3)
 
 	// 指定索引赋值, 未初始化的为 0 值
-	arr4 := [5]int{ 1: 10, 2: 20 }
+	arr4 := [5]int{1: 10, 2: 20}
 	fmt.Println(arr4) // 0 10 20 0 0
 
 	// 通过 ... 让 Go 计算数组长度
-	arr5 := [...]int{ 10, 20, 30 }
+	arr5 := [...]int{10, 20, 30}
 	fmt.Println(arr5)
 }
 
 func arrayTest03() {
 	// 注意：数组的长度是数组类型的一部分，所以 [3]int 和 [5]int 不是同一种类型
-	arr1 := [3]int{ 1, 2, 3 }
-	arr2 := [5]int{ 1, 2, 3, 4, 5 }
+	arr1 := [3]int{1, 2, 3}
+	arr2 := [5]int{1, 2, 3, 4, 5}
 	fmt.Printf("arr1's type is %T\n", arr1) // [3]int
 	fmt.Printf("arr2's type is %T\n", arr2) // [5]int
 }
 
 func arrayTest04() {
 	// 多维数组
-	arr := [3][2]string {
-		{ "1", "Vue" },
-		{ "2", "React" },
-		{ "3", "Angular" },
+	arr := [3][2]string{
+		{"1", "Vue"},
+		{"2", "React"},
+		{"3", "Angular"},
 	}
 	fmt.Println(arr)
 }
 
 func arrayTest05() {
-	arr := [...]int{ 1, 2, 3 }
+	arr := [...]int{1, 2, 3}
 	fmt.Println(len(arr))
 }
 
 func arrayTest06() {
-	arr := [3]int{ 1, 2, 3 }
+	arr := [3]int{1, 2, 3}
 	for index, value := range arr {
 		fmt.Println(index, value)
 	}
@@ -75,11 +75,11 @@ func arrayTest06() {
 
 func arrayTest07() {
 	// Go 中的数组是值类型，而不是引用类型
-	arr := [3]int{ 1, 2, 3 }
+	arr := [3]int{1, 2, 3}
 	// 数组的赋值会产生一个新的拷贝（深拷贝），修改新数组不会影响到原有数组
 	arrCopy := arr
 	arrCopy[0] = 0
-	fmt.Println(arr) // 1, 2, 3
+	fmt.Println(arr)     // 1, 2, 3
 	fmt.Println(arrCopy) // 0, 2, 3
 }
 
@@ -103,7 +103,7 @@ func sliceTest01() {
 	// 容量: 从切片的开始位置到底层数组的结束位置
 	fmt.Println(listMake)
 
-	arr := [5]int{ 1, 2, 3, 4, 5 }
+	arr := [5]int{1, 2, 3, 4, 5}
 	var s1 = arr[1:4] // 数组变量[开始位置:结束位置]，左闭右开
 	fmt.Println(s1)
 }
@@ -130,20 +130,20 @@ func sliceTest04() {
 
 func sliceTest05() {
 	// 切片并不包含任何元素，对切片的操作都会反映在底层数组中
-	arr := [5]int{ 1, 2, 3, 4, 5 }
+	arr := [5]int{1, 2, 3, 4, 5}
 	// 不写开始和结束位置，表明获取数组的全部元素
 	s := arr[:]
 	fmt.Println(arr) // 1 2 3 4 5
-	fmt.Println(s) // 1 2 3 4 5
+	fmt.Println(s)   // 1 2 3 4 5
 
 	s[0] = 10086
 	fmt.Println(arr) // 10086 2 3 4 5
-	fmt.Println(s) // 10086 2 3 4 5
+	fmt.Println(s)   // 10086 2 3 4 5
 }
 
 func sliceTest06() {
 	// 声明一个切片
-	s := []int{ 1, 2, 3, 4, 5 }
+	s := []int{1, 2, 3, 4, 5}
 	fmt.Println(s)
 	fmt.Println(len(s)) // 5
 	fmt.Println(cap(s)) // 5
@@ -153,7 +153,7 @@ func sliceTest06() {
 	fmt.Println(len(s)) // 7
 	fmt.Println(cap(s)) // 10
 	// 追加一个切片，使用 ... 解包一个切片
-	s = append(s, []int{ 8, 9, 10, 11 }...)
+	s = append(s, []int{8, 9, 10, 11}...)
 	fmt.Println(s)
 	fmt.Println(len(s)) // 11
 	fmt.Println(cap(s)) // 20
@@ -166,9 +166,9 @@ func sliceTest06() {
 func sliceTest07() {
 	// 多维切片
 	s := [][]string{
-		{ "1", "Vue" },
-		{ "2", "React" },
-		{ "3", "Angular" },
+		{"1", "Vue"},
+		{"2", "React"},
+		{"3", "Angular"},
 	}
 	fmt.Println(s)
 }
@@ -198,7 +198,7 @@ func mapTest01() {
 	// 新建 or 修改 kv
 	person["name"] = "spider"
 	person["home"] = "beijing"
-	fmt.Println(person)	// map[home:beijing name:spider]
+	fmt.Println(person) // map[home:beijing name:spider]
 
 	// 删除 kv
 	delete(person, "home")
@@ -206,7 +206,7 @@ func mapTest01() {
 
 	// 判断 kv 是否存在: value, ok := map[key]
 	name, isNameExisted := person["name"]
-	fmt.Println(name) // "spider"
+	fmt.Println(name)          // "spider"
 	fmt.Println(isNameExisted) // true
 
 	// 遍历 map

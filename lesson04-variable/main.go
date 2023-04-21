@@ -38,7 +38,7 @@ func main() {
 	var i, j = 300, "jj"
 	fmt.Println(i, j)
 	var (
-		k int = 100
+		k int    = 100
 		l string = "lol"
 	)
 	fmt.Println(k, l)
@@ -48,7 +48,7 @@ func main() {
 	fmt.Println(nodeEnv)
 
 	const (
-		BEIJING = "BEIJING"
+		BEIJING  = "BEIJING"
 		SHANGHAI = "SHANGHAI"
 		SHENZHEN = "SHENZHEN"
 	)

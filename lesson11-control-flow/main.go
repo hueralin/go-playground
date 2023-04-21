@@ -16,7 +16,7 @@ var s string = "top"
 
 // defer 在 return 后调用
 func after() string {
-	defer func () {
+	defer func() {
 		s = "inner"
 	}()
 	fmt.Println("after " + s)
@@ -90,7 +90,7 @@ func main() {
 	fmt.Println(*ptr) // plane
 
 	// defer 在 return 后调用
-	res := after() // after top
+	res := after()            // after top
 	fmt.Println("res " + res) // res top
-	fmt.Println("s " + s) // s inner
+	fmt.Println("s " + s)     // s inner
 }

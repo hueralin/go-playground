@@ -8,7 +8,7 @@ import "fmt"
 
 type Person struct {
 	name string
-	age int
+	age  int
 }
 
 type Author struct {
@@ -36,14 +36,14 @@ func (a Author) print() {
 // 指针接收器表示是调用者本身，在函数内对调用者做的变更会体现在调用者上
 
 func main() {
-	zhangsan := Person{ "zhangsan", 18 }
+	zhangsan := Person{"zhangsan", 18}
 	zhangsan.print("sanzhang")
 	fmt.Println(zhangsan.name)
 
-	lisi := Author{ "lisi" }
+	lisi := Author{"lisi"}
 	lisi.print()
 
-	wangwu := &Person{ "wangwu", 30 }
+	wangwu := &Person{"wangwu", 30}
 	wangwu.print2("wuwang")
 	fmt.Println(wangwu.name)
 }

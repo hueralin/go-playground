@@ -3,7 +3,7 @@ package main
 // 引入包，包名冲突时可以起别名
 import (
 	"fmt"
-	"go-playground/lesson09/book"
+	"go-playground/lesson09-func/book"
 )
 
 // 包
