@@ -28,7 +28,7 @@ func arrayTest02() {
 
 	// 部分初始化, 未初始化的为 0 值
 	arr3 := [5]int{10, 15}
-	fmt.Println(arr3)
+	fmt.Println(arr3) // 10 15 0 0 0
 
 	// 指定索引赋值, 未初始化的为 0 值
 	arr4 := [5]int{1: 10, 2: 20}
@@ -36,7 +36,7 @@ func arrayTest02() {
 
 	// 通过 ... 让 Go 计算数组长度
 	arr5 := [...]int{10, 20, 30}
-	fmt.Println(arr5)
+	fmt.Println(arr5) // 10 20 30
 }
 
 func arrayTest03() {
@@ -58,8 +58,8 @@ func arrayTest04() {
 }
 
 func arrayTest05() {
-	arr := [...]int{1, 2, 3}
-	fmt.Println(len(arr))
+	arr := [...]int{1, 2, 3} // 自动计算数组长度
+	fmt.Println(len(arr))    // 3
 }
 
 func arrayTest06() {
@@ -74,13 +74,16 @@ func arrayTest06() {
 }
 
 func arrayTest07() {
-	// Go 中的数组是值类型，而不是引用类型
+	// Go 中的数组是值类型，而不是引用类型，这一点和 c 语言不一样
 	arr := [3]int{1, 2, 3}
 	// 数组的赋值会产生一个新的拷贝（深拷贝），修改新数组不会影响到原有数组
 	arrCopy := arr
 	arrCopy[0] = 0
-	fmt.Println(arr)     // 1, 2, 3
-	fmt.Println(arrCopy) // 0, 2, 3
+	arrCopy2 := &arr
+	arrCopy2[0] = 4
+	fmt.Println(arr)      // 4, 2, 3
+	fmt.Println(arrCopy)  // 0, 2, 3
+	fmt.Println(arrCopy2) // 4, 2, 3
 }
 
 // 切片
@@ -89,11 +92,11 @@ func arrayTest07() {
 // slice 的语法和数组很像，只是没有固定长度而已
 
 func sliceTest01() {
-	// 方法一：声明整型切片，注意和数组的声明不同，数组的声明带长度
+	// 方法一：声明整型切片，注意和数组的声明不同，数组的声明带长度，而切片不需要
 	var list []int
 	fmt.Printf("list's type is %T\n", list) // []int
 	fmt.Println(list)
-	// 方法二：声明并初始化一个空切片
+	// 方法二：声明并初始化一个空切片（GoLand 更推荐方法一）
 	var listEmpty = []int{}
 	fmt.Println(listEmpty)
 	// 方法三：make 声明 make([]Type, size, cap)
@@ -104,8 +107,10 @@ func sliceTest01() {
 	fmt.Println(listMake)
 
 	arr := [5]int{1, 2, 3, 4, 5}
-	var s1 = arr[1:4] // 数组变量[开始位置:结束位置]，左闭右开
-	fmt.Println(s1)
+	var s1 = arr[1:4]                                    // 数组变量[开始位置:结束位置]，左闭右开
+	fmt.Printf("s1's type is %T, value is %v\n", s1, s1) // s1's type is []int, value is [2 3 4]
+	// 注意：第一个切片元素不一定是第一个数组元素
+	fmt.Printf("arr[0] is %d, s1[0] is %d\n", arr[0], s1[0]) // 1 2
 }
 
 func sliceTest02() {
@@ -129,7 +134,7 @@ func sliceTest04() {
 }
 
 func sliceTest05() {
-	// 切片并不包含任何元素，对切片的操作都会反映在底层数组中
+	// 切片本身并不包含任何元素，对切片的操作都会反映在底层数组中
 	arr := [5]int{1, 2, 3, 4, 5}
 	// 不写开始和结束位置，表明获取数组的全部元素
 	s := arr[:]
@@ -144,17 +149,17 @@ func sliceTest05() {
 func sliceTest06() {
 	// 声明一个切片
 	s := []int{1, 2, 3, 4, 5}
-	fmt.Println(s)
+	fmt.Println(s)      // 1 2 3 4 5
 	fmt.Println(len(s)) // 5
 	fmt.Println(cap(s)) // 5
 	// 追加元素
 	s = append(s, 6, 7)
-	fmt.Println(s)
+	fmt.Println(s)      // 1 2 3 4 5 6 7
 	fmt.Println(len(s)) // 7
 	fmt.Println(cap(s)) // 10
 	// 追加一个切片，使用 ... 解包一个切片
 	s = append(s, []int{8, 9, 10, 11}...)
-	fmt.Println(s)
+	fmt.Println(s)      // 1 2 3 4 5 6 7 8 9 10 11
 	fmt.Println(len(s)) // 11
 	fmt.Println(cap(s)) // 20
 
@@ -209,6 +214,10 @@ func mapTest01() {
 	fmt.Println(name)          // "spider"
 	fmt.Println(isNameExisted) // true
 
+	name2, isNameExisted2 := person["hello"]
+	fmt.Println(name2)          // "空字符串"
+	fmt.Println(isNameExisted2) // false
+
 	// 遍历 map
 	person["home"] = "beijing"
 	for key, val := range person {
@@ -235,6 +244,7 @@ func main() {
 	//arrayTest04()
 	//arrayTest05()
 	//arrayTest06()
+	//arrayTest07()
 
 	//sliceTest01()
 	//sliceTest02()

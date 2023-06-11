@@ -7,6 +7,9 @@ import (
 	"unsafe"
 )
 
+// 声明指针变量：var var_name *var-type
+// 在指针类型前面加上 * 号（前缀）来获取指针所指向的内容
+
 func test01(ptr *int) {
 	// 修改了指向的变量的值
 	*ptr = 999
@@ -15,6 +18,7 @@ func test01(ptr *int) {
 	ptr = &num
 }
 
+// 参数是一个整型数组的指针
 func changeArrByPtr(arr *[3]int) {
 	(*arr)[0] = 1
 	(*arr)[1] = 2
