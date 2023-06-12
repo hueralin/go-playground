@@ -6,6 +6,13 @@ import "fmt"
 
 // 创建类型或者结构体，并为其绑定接口定义的方法，接收者为该类型或结构体，方法名为接口中定义的方法名，这样就说该类型或者结构体实现了该接口
 
+// Go 语言提供了另外一种数据类型即接口，它把所有的具有共性的方法定义在一起，任何其他类型只要实现了这些方法就是实现了这个接口。
+// 接口可以让我们将不同的类型绑定到一组公共的方法上，从而实现多态和灵活的设计。
+// Go 语言中的接口是隐式实现的，也就是说，如果一个类型实现了一个接口定义的所有方法，那么它就自动地实现了该接口。
+// 因此，我们可以通过将接口作为参数来实现对不同类型的调用，从而实现多态。
+
+// Go官方文档中表示: interface 本身是引用类型，即接口类型本身是指针类型。
+
 type Study interface {
 	learn()
 }
@@ -41,6 +48,24 @@ func showInterface(s Study) {
 // 空接口参数
 func showEmptyInterface(i interface{}) {
 	fmt.Printf("type: %T, value: %v\n", i, i)
+}
+
+// 新例子
+
+type Phone interface {
+	call()
+}
+
+type NokiaPhone struct{}
+
+func (p *NokiaPhone) call() {
+	fmt.Println("I am Nokia")
+}
+
+type IPhone struct{}
+
+func (p *IPhone) call() {
+	fmt.Println("I am IPhone")
 }
 
 func main() {
@@ -94,4 +119,12 @@ func main() {
 	// 但是反过来不行，即空接口变量被赋予一个确定类型的值后，空接口变量就不能赋值给其他类型的变量
 	// var xxx = "wow"
 	// xxx= i // Cannot use 'i' (type interface{}) as the type string
+
+	var phone Phone
+
+	phone = new(NokiaPhone)
+	phone.call()
+
+	phone = new(IPhone)
+	phone.call()
 }
