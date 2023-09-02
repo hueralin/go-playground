@@ -254,5 +254,24 @@ func main() {
 	//sliceTest06()
 	//sliceTest07()
 
-	mapTest01()
+	//mapTest01()
+	var m = map[string]string{"name": "tom", "age": "18"}
+
+	for k := range m {
+		// age
+		// name
+		fmt.Printf("key is %v\n", k)
+	}
+
+	for _, v := range m {
+		// 18
+		// tom
+		fmt.Printf("value is %v\n", v)
+	}
+
+	for k, v := range m {
+		// age 18
+		// name tom
+		fmt.Printf("key is %v, value is %v\n", k, v)
+	}
 }
