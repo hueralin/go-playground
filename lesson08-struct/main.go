@@ -3,6 +3,7 @@ package main
 import "fmt"
 
 // 结构体
+// 当结构体遇到指针的时候，你不需要使用 * 去访问结构体的成员，直接使用 . 引用就可以了。
 
 // Person 命名结构体
 type Person struct {
