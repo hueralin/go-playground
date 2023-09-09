@@ -70,4 +70,7 @@ func main() {
 	fmt.Println(D, E, F) // 0, 10, 20
 
 	// 25 个关键字
+	var s3 = []int{1, 2, 3}
+	fmt.Printf("len is %v\n", len(s3))
+	fmt.Printf("cap is %v\n", cap(s3))
 }
