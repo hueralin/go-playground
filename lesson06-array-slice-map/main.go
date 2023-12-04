@@ -255,23 +255,40 @@ func main() {
 	//sliceTest07()
 
 	//mapTest01()
-	var m = map[string]string{"name": "tom", "age": "18"}
+	//var m = map[string]string{"name": "tom", "age": "18"}
+	//
+	//for k := range m {
+	//	// age
+	//	// name
+	//	fmt.Printf("key is %v\n", k)
+	//}
+	//
+	//for _, v := range m {
+	//	// 18
+	//	// tom
+	//	fmt.Printf("value is %v\n", v)
+	//}
+	//
+	//for k, v := range m {
+	//	// age 18
+	//	// name tom
+	//	fmt.Printf("key is %v, value is %v\n", k, v)
+	//}
 
-	for k := range m {
-		// age
-		// name
-		fmt.Printf("key is %v\n", k)
+	var arr [5]*int
+	for _, v := range arr {
+		// panic: runtime error: invalid memory address or nil pointer dereference
+		fmt.Printf("elem: %v, value: %v\n", v, *v)
 	}
 
-	for _, v := range m {
-		// 18
-		// tom
-		fmt.Printf("value is %v\n", v)
+	arr2 := [5]*int{0: new(int), 1: new(int)}
+	for i, v := range arr2 {
+		// elem: 0xc00000a0b8, value: 0
+		// elem: 0xc00000a0d0, value: 0
+		// panic: runtime error: invalid memory address or nil pointer dereference
+		// fmt.Printf("elem: %v, value: %v\n", v, *v)
+		// panic: runtime error: invalid memory address or nil pointer dereference
+		*v = i
 	}
-
-	for k, v := range m {
-		// age 18
-		// name tom
-		fmt.Printf("key is %v, value is %v\n", k, v)
-	}
+	fmt.Println(arr2)
 }
