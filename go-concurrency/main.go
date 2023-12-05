@@ -8,5 +8,6 @@ func main() {
 	//ShowMutex()
 	//ShowWebCrawlerDone()
 	//ShowTennis()
-	ShowRace()
+	//ShowRace()
+	ShowWorker()
 }
