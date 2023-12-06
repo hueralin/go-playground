@@ -102,4 +102,7 @@ func main() {
 	zhangsan.changeName("lisi")
 	zhangsan.changeName2("wangwu")
 	fmt.Println(zhangsan)
+
+	// 结构体嵌套
+	StructEmbed()
 }
