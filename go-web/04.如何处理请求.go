@@ -19,7 +19,7 @@ func main04() {
 	//}
 	// 从浏览器发出的请求不会携带 Fragment，但其他的 HTTP 客户端可能会
 
-	// Header 是一个 map, map[string][]string
+	// 请求中的 Header 是一个 map, map[string][]string
 	// 设置 key 时会创建一个空的 []string 作为 value
 	// 获取 Header: r.Header，返回一个 map
 	// 获取指定的 Header: r.Header["Content-Type"]，返回一个 []string

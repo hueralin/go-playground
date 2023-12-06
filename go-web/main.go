@@ -1,7 +1,8 @@
 package main
 
 import (
-	"go-web/middlewares"
+	"fmt"
+	"log"
 	"net/http"
 )
 
@@ -404,11 +405,72 @@ func main() {
 	// Encode => Stream，把数据写入 io.Writer
 	// Decoder <= Stream，从 io.Reader 读取数据
 
-	// 中间件，能对请求做处理，也能对响应做处理
-	// 应用场景：日志、安全、请求超时、响应压缩...
-	server := http.Server{Addr: "localhost:8888", Handler: new(middlewares.AuthMw)}
-	http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("hello"))
+	//// 中间件，能对请求做处理，也能对响应做处理
+	//// 应用场景：日志、安全、请求超时、响应压缩...
+	//server := http.Server{Addr: "localhost:8888", Handler: new(middlewares.AuthMw)}
+	//http.HandleFunc("/hello", func(w http.ResponseWriter, r *http.Request) {
+	//	w.Write([]byte("hello"))
+	//})
+	//err := server.ListenAndServe()
+	//if err != nil {
+	//	return
+	//}
+
+	// 请求上下文
+	// func (r *Request) Context() context.Context 返回当前请求的上下文
+	// func (r *Request) WithContext(ctx context.Context, k, v) context.Context 扩展上下文（上下文本身不可修改）
+	//server := http.Server{Addr: ":8888"}
+	//http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	//	// 返回当前请求的上下文
+	//	ctx := r.Context()
+	//	// 在上下文中存储一些该请求范围内的数据（请求上下文是不可修改的，所以每次都会创建新的）
+	//	ctx = context.WithValue(ctx, "k1", "v1")
+	//	ctx = context.WithValue(ctx, "k2", "v2")
+	//	ctx = context.WithValue(ctx, "k3", "v3")
+	//	// 读取指定 key 的 value
+	//	_, err := fmt.Fprintln(w, ctx.Value("k1"))
+	//	if err != nil {
+	//		return
+	//	}
+	//})
+	//err := server.ListenAndServe()
+	//if err != nil {
+	//	return
+	//}
+
+	// cookie
+	// http.Cookie 结构
+	// r.Cookie(key) 读取 cookie
+	// http.SetCookie(w, &cookie) 设置 cookie
+	server := http.Server{Addr: ":8888"}
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		xxxCookie, err := r.Cookie("xxx")
+		aaaCookie := http.Cookie{
+			Name:  "aaa",
+			Value: "bbb",
+		}
+		// 将 cookie 添加进请求，即扩充当前 cookie，一般用于转发到其他 service
+		r.AddCookie(&aaaCookie)
+		// 返回 cookie 指针切片
+		fmt.Printf("Cookies: %v\n", r.Cookies()) // 能看到扩充的其他 cookie
+		if err != nil {
+			// log when named cookie no present
+			log.Println(err.Error())
+			// create cookie
+			cookie := http.Cookie{
+				Name:  "xxx",
+				Value: "yyy",
+			}
+			// 相当于 w.Header().Add("Set-Cookie", cookie.String())
+			http.SetCookie(w, &cookie)
+		} else {
+			fmt.Println(xxxCookie)      // xxx=yyy
+			fmt.Println(xxxCookie.Name) // xxx
+			_, err = fmt.Fprintln(w, xxxCookie)
+			if err != nil {
+				return
+			}
+		}
 	})
 	err := server.ListenAndServe()
 	if err != nil {
