@@ -1,6 +1,7 @@
 package bst
 
 import (
+	"fmt"
 	"go-playground/datastructure/tree"
 )
 
@@ -104,12 +105,22 @@ func DeleteValue(root *tree.TreeNode, val int) *tree.TreeNode {
 		if root.Right == nil {
 			return root.Left
 		}
-		// 删除有两个孩子的节点，则让左子树的最大值，或者右子树的最小值提升
+		// 方法 1：只交换值
+		//// 删除有两个孩子的节点，则让左子树的最大值，或者右子树的最小值提升
+		//minNode := GetMinNode(root.Right)
+		//// 将 minNode 的值提升
+		//root.Value = minNode.Value
+		//// 然后再删除 minNode
+		//root.Right = DeleteValue(root.Right, minNode.Value)
+
+		// 方法 2：交换节点
 		minNode := GetMinNode(root.Right)
-		// 将 minNode 的值提升
-		root.Value = minNode.Value
-		// 然后再删除 minNode
-		root.Right = DeleteValue(root.Right, minNode.Value)
+		// minNode 接替 root 的位置，但是要注意，先接替 Right，
+		// 否则在删除 minNode 的时候，会发现它还有 Left，导致 BUG
+		minNode.Right = DeleteValue(root.Right, minNode.Value)
+		minNode.Left = root.Left
+		// 使用 minNode 作为此棵子树的根节点
+		return minNode
 	} else if val < root.Value {
 		root.Left = DeleteValue(root.Left, val)
 	} else {
@@ -173,5 +184,5 @@ func Test() {
 	// DeleteValue
 	t1 = DeleteValue(t1, 5)
 	t1 = DeleteValue(t1, 1)
-	InOrder(t1)
+	fmt.Println(InOrder(t1))
 }
