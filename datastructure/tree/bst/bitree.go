@@ -1,7 +1,6 @@
 package bst
 
 import (
-	"fmt"
 	"go-playground/datastructure/tree"
 )
 
@@ -53,7 +52,7 @@ func IsValidBST(root *tree.TreeNode) bool {
 }
 
 // InOrder 中序遍历
-func InOrder(root *tree.TreeNode) {
+func InOrder(root *tree.TreeNode) []int {
 	var result []int
 	var helper func(t *tree.TreeNode)
 
@@ -71,7 +70,7 @@ func InOrder(root *tree.TreeNode) {
 	}
 
 	helper(root)
-	fmt.Println(result)
+	return result
 }
 
 // InsertValue 向树中插入值，暂不允许插入相同的值
@@ -157,11 +156,11 @@ func Test() {
 	//fmt.Println(t1)
 
 	// InsertValue
-	InsertValue(t1, 2)
-	InsertValue(t1, 5)
-	InsertValue(t1, 3)
-	InsertValue(t1, 8)
-	InsertValue(t1, 6)
+	t1 = InsertValue(t1, 2)
+	t1 = InsertValue(t1, 5)
+	t1 = InsertValue(t1, 3)
+	t1 = InsertValue(t1, 8)
+	t1 = InsertValue(t1, 6)
 	//InOrder(t1)
 
 	// IsInBST
