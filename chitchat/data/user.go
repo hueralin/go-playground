@@ -1,6 +1,7 @@
 package data
 
 import (
+	"errors"
 	"time"
 )
 
@@ -21,6 +22,13 @@ type Session struct {
 	CreatedAt time.Time
 }
 
+func GetUserByEmail(email string) (User, error) {
+	var user User
+	row := Db.QueryRow("SELECT * FROM users WHERE email = $1;", email)
+	err := row.Scan(&user.Id, &user.Uuid, &user.Name, &user.Email, &user.Password, &user.CreatedAt)
+	return user, err
+}
+
 // CreateSession create a new session for an existing user
 func (user *User) CreateSession() (Session, error) {
 	var session Session
@@ -37,9 +45,14 @@ func (user *User) CreateSession() (Session, error) {
 	return session, nil
 }
 
-func GetUserByEmail(email string) (User, error) {
-	var user User
-	row := Db.QueryRow("SELECT * FROM users WHERE email = $1;", email)
-	err := row.Scan(&user.Id, &user.Uuid, &user.Name, &user.Email, &user.Password, &user.CreatedAt)
-	return user, err
+func (sess *Session) Check() (bool, error) {
+	row := Db.QueryRow("SELECT * FROM session WHERE uuid = $1;", sess.Uuid)
+	err := row.Scan(&sess.Id, &sess.Uuid, &sess.UserId, &sess.Email, &sess.CreatedAt)
+	if err != nil {
+		return false, err
+	}
+	if sess.Id == 0 {
+		return false, errors.New("session not found")
+	}
+	return true, nil
 }

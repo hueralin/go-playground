@@ -13,7 +13,7 @@ var Db *sql.DB
 
 func init() {
 	var err error
-	dsn := "host=localhost port=4432 user=postgres password=Oushu6@China dbname=chitchat sslmode=disable"
+	dsn := "host=localhost port=5432 user=postgres password=123456789 dbname=chitchat sslmode=disable"
 	Db, err = sql.Open("postgres", dsn)
 	if err != nil {
 		log.Fatalln(err.Error())

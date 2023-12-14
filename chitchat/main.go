@@ -2,7 +2,6 @@ package main
 
 import (
 	"chitchat/data"
-	"html/template"
 	"log"
 	"net/http"
 )
@@ -40,13 +39,9 @@ func main() {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	files := []string{
-		"templates/layout.html",
-		"templates/public.navbar.html",
-		"templates/index.html",
-	}
-	// 解析模板
-	templates := template.Must(template.ParseFiles(files...))
+	// 准备模板
+	publicTmplFiles := []string{"layout", "public.navbar", "index"}
+	privateTmplFiles := []string{"layout", "private.navbar", "index"}
 	// 获取 Threads
 	threads, err := data.GetThreads()
 	if err != nil {
@@ -54,11 +49,22 @@ func home(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	// 执行模板（将数据和模板组合，然后写入到 writer）
-	err = templates.ExecuteTemplate(w, "layout", threads)
+	// 检查登录状态
+	_, err = Session(r)
+	// 根据状态解析对应的模板文件（进行语法分析），得到模板
 	if err != nil {
-		log.Println(err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
+		_err := GenerateHTML(w, threads, publicTmplFiles...)
+		if _err != nil {
+			log.Println(_err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	} else {
+		_err := GenerateHTML(w, threads, privateTmplFiles...)
+		if _err != nil {
+			log.Println(_err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 }
