@@ -7,6 +7,8 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"reflect"
+	"runtime"
 )
 
 func Session(r *http.Request) (data.Session, error) {
@@ -36,4 +38,24 @@ func GenerateHTML(w http.ResponseWriter, data interface{}, fileNames ...string) 
 	tmpl := template.Must(template.ParseFiles(files...))
 	// 执行模板，将模板和数据拼接成 HTML 文件，并写入到 writer
 	return tmpl.ExecuteTemplate(w, "layout", data)
+}
+
+// Log 串联处理器函数，类似于中间件
+func Log(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		name :=
+			runtime.FuncForPC(reflect.ValueOf(h).Pointer()).Name()
+		fmt.Println("Handler function called - " + name)
+		h(w, r)
+	}
+}
+
+// Log2 串联处理器，类似于中间件
+func Log2(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		name :=
+			runtime.FuncForPC(reflect.ValueOf(h).Pointer()).Name()
+		fmt.Println("Handler function called - " + name)
+		h.ServeHTTP(w, r)
+	})
 }
