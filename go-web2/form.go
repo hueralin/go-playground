@@ -1,12 +1,18 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
 )
+
+type Post struct {
+	User    string
+	Threads []string
+}
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("hello"))
@@ -137,6 +143,35 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func write(w http.ResponseWriter, r *http.Request) {
+	//w.Write([]byte("hello"))
+	// 多余的 WriterHeader 调用, 因为 Write 默认设置了 200
+	// http: superfluous response.WriteHeader call from main.write (form.go:142)
+	//w.WriteHeader(http.StatusNotImplemented)
+	//fmt.Fprintln(w, "no service")
+
+	// 临时重定向，先写入首部，再调用 WriteHeader 方法
+	//w.Header().Set("Location", "https://google.com")
+	//w.WriteHeader(http.StatusFound)
+
+	// 写入 JSON
+	post := Post{
+		User: "tom",
+		Threads: []string{
+			"React",
+			"Vue",
+		},
+	}
+	json, err := json.Marshal(post)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
+}
+
 func main() {
 	http.HandleFunc("/", hello)
 	http.HandleFunc("/login", login)
@@ -144,6 +179,8 @@ func main() {
 	http.HandleFunc("/body2", body2)
 	http.HandleFunc("/body3", body3)
 	http.HandleFunc("/upload", upload)
+	http.HandleFunc("/write", write)
+
 	fmt.Println("Server at http://localhost:8888")
 	err := http.ListenAndServe(":8888", nil)
 	if err != nil {
