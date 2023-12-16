@@ -1,12 +1,14 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 type Post struct {
@@ -172,6 +174,75 @@ func write(w http.ResponseWriter, r *http.Request) {
 	w.Write(json)
 }
 
+func cookie(w http.ResponseWriter, r *http.Request) {
+	//c1 := http.Cookie{
+	//	Name:     "c1",
+	//	Value:    "v1",
+	//	HttpOnly: true,
+	//}
+	//c2 := http.Cookie{
+	//	Name:     "c2",
+	//	Value:    "v2",
+	//	HttpOnly: true,
+	//}
+
+	// 设置 cookie 的方法 1
+	//header := w.Header()
+	//header.Set("Set-Cookie", c1.String())
+	//header.Add("Set-Cookie", c2.String())
+
+	// 设置 cookie 的方法 2
+	//http.SetCookie(w, &c1)
+	//http.SetCookie(w, &c2)
+
+	// 从客户端获取 cookie
+	//c := r.Header["Cookie"]
+	// 一个切片，里面一个字符串，包含多个 cookie，得自己解析
+	// [c1=v1;c2=v2]
+	//fmt.Fprintln(w, c)
+
+	// 从客户端获取 cookie 的方法 2
+	// 返回 Cookie 结构的指针
+	c, err := r.Cookie("c1")
+	if err != nil {
+		log.Println(err.Error())
+	}
+	// 返回 Cookie 结构的指针切片
+	cs := r.Cookies()
+	// c1=v1
+	fmt.Fprintln(w, c)
+	// [c1=v1 c2=v2]
+	fmt.Fprintln(w, cs)
+}
+
+func setMsg(w http.ResponseWriter, r *http.Request) {
+	msg := []byte("Hello~")
+	c := http.Cookie{
+		Name:  "flash",
+		Value: base64.URLEncoding.EncodeToString(msg),
+	}
+	http.SetCookie(w, &c)
+}
+
+func showMsg(w http.ResponseWriter, r *http.Request) {
+	c, err := r.Cookie("flash")
+	if err != nil {
+		// http.ErrNoCookie
+		log.Println(err.Error())
+		fmt.Fprintln(w, "no message")
+		return
+	}
+	// 用新 cookie 冲掉之前的 cookie，并且瞬间过期，即刷新后就没了
+	rc := http.Cookie{
+		Name:    "flash",
+		MaxAge:  -1,
+		Expires: time.Unix(1, 0),
+	}
+	http.SetCookie(w, &rc)
+	val, err := base64.URLEncoding.DecodeString(c.Value)
+	fmt.Fprintln(w, string(val))
+}
+
 func main() {
 	http.HandleFunc("/", hello)
 	http.HandleFunc("/login", login)
@@ -180,6 +251,9 @@ func main() {
 	http.HandleFunc("/body3", body3)
 	http.HandleFunc("/upload", upload)
 	http.HandleFunc("/write", write)
+	http.HandleFunc("/cookie", cookie)
+	http.HandleFunc("/set-msg", setMsg)
+	http.HandleFunc("/show-msg", showMsg)
 
 	fmt.Println("Server at http://localhost:8888")
 	err := http.ListenAndServe(":8888", nil)
