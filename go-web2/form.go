@@ -255,9 +255,14 @@ func main() {
 	http.HandleFunc("/set-msg", setMsg)
 	http.HandleFunc("/show-msg", showMsg)
 
-	fmt.Println("Server at http://localhost:8888")
-	err := http.ListenAndServe(":8888", nil)
-	if err != nil {
-		return
-	}
+	WriteFile()
+	ReadFile()
+	CreateAndWriteFile()
+	OpenFile()
+
+	//fmt.Println("Server at http://localhost:8888")
+	//err := http.ListenAndServe(":8888", nil)
+	//if err != nil {
+	//	return
+	//}
 }
